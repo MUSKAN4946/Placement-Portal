@@ -4,6 +4,7 @@ import axios from "axios";
 
 function Dashboard() {
 
+
     const navigate = useNavigate();
     const [totalJobs, setTotalJobs] = useState(0);
 
@@ -12,6 +13,9 @@ function Dashboard() {
     const [atsScore, setAtsScore] = useState(0);
 
     const [bestMatch, setBestMatch] = useState(0);
+
+    const interviewCount =
+    localStorage.getItem("interviewCount") || 0;
 
     useEffect(() => {
 
@@ -46,6 +50,8 @@ function Dashboard() {
                 );
 
             }
+
+            
 
             // Resume Analysis
 
@@ -91,6 +97,8 @@ function Dashboard() {
                     AI Placement Portal
                 </h1>
 
+
+
                 <button
                     onClick={logout}
                     className="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600"
@@ -102,9 +110,31 @@ function Dashboard() {
 
             <div className="max-w-5xl mx-auto p-8">
 
-                <h2 className="text-3xl font-bold mb-8">
-                    Welcome 👋
-                </h2>
+                
+
+
+
+                <div className="bg-white shadow-lg rounded-xl p-8 mb-10 text-center">
+
+    <h2 className="text-4xl font-bold text-gray-800">
+        Welcome👋
+    </h2>
+
+    <p className="text-gray-500 mt-3">
+        Manage your resume, track interviews, save jobs and monitor your placement journey.
+    </p>
+
+</div>
+
+
+
+
+
+
+
+
+
+
 
                 <div className="grid md:grid-cols-3 gap-6 mb-8">
 
@@ -132,40 +162,52 @@ function Dashboard() {
 
 </div>
 
-                <button
-                    onClick={() => navigate("/resume-upload")}
-                    className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 mb-4 mr-4"
-                >
-                    Resume Upload
-                </button>
+<div className="bg-white shadow-lg rounded-xl p-8 mb-10">
 
-                <button
-                    onClick={() => navigate("/job-recommendation")}
-                    className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700"
-                >
-                    Job Recommendation
-                </button>
+    <h2 className="text-2xl font-bold text-center mb-8">
+        🚀 Quick Actions
+    </h2>
 
-                <button
-                    onClick={() => navigate("/saved-jobs")}
-                    className="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 ml-4"
-                >
-                     Saved Jobs
-                </button>
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-                <button
-                    onClick={() => navigate("/profile")}
-                    className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 ml-4 mt-4"
-                >
-                     My Profile
-                </button>
+        <button
+            onClick={() => navigate("/resume-upload")}
+            className="bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
+        >
+            Resume Upload
+        </button>
 
-                <button
-                    onClick={() => navigate("/mock-interview")}
-                    className="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 ml-4 mt-4"
-                >
-                    Mock Interview
-                </button>
+        <button
+            onClick={() => navigate("/job-recommendation")}
+            className="bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition"
+        >
+            Job Recommendation
+        </button>
+
+        <button
+            onClick={() => navigate("/saved-jobs")}
+            className="bg-pink-600 text-white py-3 rounded-lg hover:bg-pink-700 transition"
+        >
+            Saved Jobs
+        </button>
+
+        <button
+            onClick={() => navigate("/profile")}
+            className="bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
+        >
+            My Profile
+        </button>
+
+        <button
+            onClick={() => navigate("/mock-interview")}
+            className="bg-orange-600 text-white py-3 rounded-lg hover:bg-orange-700 transition"
+        >
+            Mock Interview
+        </button>
+
+    </div>
+
+</div>
 
 
 
@@ -188,6 +230,10 @@ function Dashboard() {
 
                         </p>
 
+                        <p className="text-gray-500 text-sm mt-2">
+    Available job recommendations
+</p>
+
                 </div>
 
                 <div className="bg-white shadow-lg rounded-xl p-6 text-center">
@@ -205,6 +251,10 @@ function Dashboard() {
                         Saved Jobs
 
                     </p>
+
+                    <p className="text-gray-500 text-sm mt-2">
+    Jobs saved for later
+</p>
 
                 </div>
 
@@ -224,6 +274,10 @@ function Dashboard() {
 
                     </p>
 
+                    <p className="text-gray-500 text-sm mt-2">
+    Resume quality score
+</p>
+
                  </div>
 
                 <div className="bg-white shadow-lg rounded-xl p-6 text-center">
@@ -241,6 +295,11 @@ function Dashboard() {
                         Best Match
 
                     </p>
+
+
+                    <p className="text-gray-500 text-sm mt-2">
+    Highest matching job
+</p>
 
                 </div>
 
@@ -287,6 +346,83 @@ function Dashboard() {
     </div>
 
     <div>
+
+
+
+
+
+
+        <div className="bg-white rounded-xl shadow-lg p-6 mt-8">
+
+    <h2 className="text-xl font-bold mb-6">
+        📝 Recent Activity
+    </h2>
+
+    <div className="space-y-4">
+
+        <div className="flex items-center justify-between border-b pb-3">
+
+            <div>
+
+                <h3 className="font-semibold text-green-700">
+                    Resume Uploaded
+                </h3>
+
+                <p className="text-sm text-gray-500">
+                    Your latest resume has been uploaded successfully.
+                </p>
+
+            </div>
+
+            <span className="text-xs text-gray-400">
+                Today
+            </span>
+
+        </div>
+
+        <div className="flex items-center justify-between border-b pb-3">
+
+            <div>
+
+                <h3 className="font-semibold text-blue-700">
+                    ATS Analysis Completed
+                </h3>
+
+                <p className="text-sm text-gray-500">
+                    Resume analyzed and ATS score generated.
+                </p>
+
+            </div>
+
+            <span className="text-xs text-gray-400">
+                Today
+            </span>
+
+        </div>
+
+        <div className="flex items-center justify-between">
+
+            <div>
+
+                <h3 className="font-semibold text-purple-700">
+                    Job Recommendations Loaded
+                </h3>
+
+                <p className="text-sm text-gray-500">
+                    Personalized jobs are ready for you.
+                </p>
+
+            </div>
+
+            <span className="text-xs text-gray-400">
+                Today
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
 
         <div className="flex justify-between mb-2">
 
