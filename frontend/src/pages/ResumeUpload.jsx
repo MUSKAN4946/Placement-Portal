@@ -50,6 +50,7 @@ function ResumeUpload() {
             );
 
             setAnalysis(response.data);
+            localStorage.setItem("atsScore", response.data.score);
 
         }
 
