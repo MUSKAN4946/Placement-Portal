@@ -41,26 +41,188 @@ function ResumeUpload() {
 
     };
 
+    
+
+
     const analyzeResume = async () => {
 
-        try {
+    try {
 
-            const response = await axios.get(
-                "http://127.0.0.1:8000/analyze-resume"
+        const response = await axios.get(
+            "http://127.0.0.1:8000/analyze-resume"
+        );
+
+        const score = Number(response.data.score);
+
+
+        // Save ATS Score
+        localStorage.setItem(
+            "atsScore",
+            score
+        );
+
+
+        // ================================
+        // PERFORMANCE
+        // ================================
+
+        let performance = "";
+
+        if (score >= 90) {
+
+            performance = "Excellent";
+
+        } else if (score >= 75) {
+
+            performance = "Very Good";
+
+        } else if (score >= 60) {
+
+            performance = "Good";
+
+        } else if (score >= 40) {
+
+            performance = "Average";
+
+        } else {
+
+            performance = "Needs Improvement";
+
+        }
+
+
+        // ================================
+        // GET HISTORY
+        // ================================
+
+        let history = [];
+
+        const savedHistory =
+            localStorage.getItem("interviewHistory");
+
+        if (savedHistory) {
+
+            try {
+
+                const parsed =
+                    JSON.parse(savedHistory);
+
+                if (Array.isArray(parsed)) {
+
+                    history = parsed;
+
+                }
+
+            } catch {
+
+                history = [];
+
+            }
+
+        }
+
+
+        // ================================
+        // TODAY
+        // ================================
+
+        const today =
+            new Date().toLocaleDateString();
+
+
+        // ================================
+        // REMOVE DUPLICATES
+        // ================================
+
+        const cleanedHistory = history.filter(
+            (item, index, array) => {
+
+                const key =
+                    `${item.date}-${Number(item.score)}`;
+
+                return (
+                    index ===
+                    array.findIndex(
+                        (other) =>
+                            `${other.date}-${Number(other.score)}` === key
+                    )
+                );
+
+            }
+        );
+
+
+        // ================================
+        // CHECK CURRENT INTERVIEW
+        // ================================
+
+        const exists =
+            cleanedHistory.some(
+                (item) =>
+                    item.date === today &&
+                    Number(item.score) === score
             );
 
-            setAnalysis(response.data);
-            localStorage.setItem("atsScore", response.data.score);
+
+        // ================================
+        // ADD ONLY IF NOT EXISTS
+        // ================================
+
+        let finalHistory =
+            cleanedHistory;
+
+        if (!exists) {
+
+            finalHistory = [
+
+                {
+                    date: today,
+                    score: score,
+                    performance: performance
+                },
+
+                ...cleanedHistory
+
+            ];
 
         }
 
-        catch (error) {
 
-            alert("Resume Analysis Failed");
+        // ================================
+        // ONLY LAST 5
+        // ================================
 
-        }
+        finalHistory =
+            finalHistory.slice(0, 5);
 
-    };
+
+        // ================================
+        // SAVE
+        // ================================
+
+        localStorage.setItem(
+            "interviewHistory",
+            JSON.stringify(finalHistory)
+        );
+
+
+        // ================================
+        // SHOW ANALYSIS
+        // ================================
+
+        setAnalysis(response.data);
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert("Resume Analysis Failed");
+
+    }
+
+};
 
     return (
 

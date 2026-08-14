@@ -4,6 +4,36 @@ import axios from "axios";
 
 function Dashboard() {
 
+    const interviewHistory =
+    JSON.parse(localStorage.getItem("interviewHistory")) || [];
+
+const totalInterviews = interviewHistory.length;
+
+const highestInterviewScore =
+    interviewHistory.length > 0
+        ? Math.max(
+            ...interviewHistory.map(
+                (item) => item.score
+            )
+        )
+        : 0;
+
+const averageInterviewScore =
+    interviewHistory.length > 0
+        ? Math.round(
+            interviewHistory.reduce(
+                (total, item) =>
+                    total + item.score,
+                0
+            ) / interviewHistory.length
+        )
+        : 0;
+
+const latestInterviewScore =
+    interviewHistory.length > 0
+        ? interviewHistory[0].score
+        : 0;
+
 
     const navigate = useNavigate();
     const [totalJobs, setTotalJobs] = useState(0);
@@ -164,8 +194,99 @@ function Dashboard() {
 
 <div className="bg-white shadow-lg rounded-xl p-8 mb-10">
 
+{/* Interview Analytics */}
+
+<div className="mt-10">
+
+    <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+
+        Interview Analytics
+
+    </h2>
+
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        {/* Total Interviews */}
+
+        <div className="bg-white shadow-lg rounded-xl p-6 text-center border-t-4 border-blue-500">
+
+            <h3 className="text-lg font-semibold text-gray-700">
+
+                Total Interviews
+
+            </h3>
+
+            <p className="text-4xl font-bold text-blue-600 mt-3">
+
+                {totalInterviews}
+
+            </p>
+
+        </div>
+
+
+        {/* Highest Score */}
+
+        <div className="bg-white shadow-lg rounded-xl p-6 text-center border-t-4 border-green-500">
+
+            <h3 className="text-lg font-semibold text-gray-700">
+
+                Highest Score
+
+            </h3>
+
+            <p className="text-4xl font-bold text-green-600 mt-3">
+
+                {highestInterviewScore}%
+
+            </p>
+
+        </div>
+
+
+        {/* Average Score */}
+
+        <div className="bg-white shadow-lg rounded-xl p-6 text-center border-t-4 border-purple-500">
+
+            <h3 className="text-lg font-semibold text-gray-700">
+
+                Average Score
+
+            </h3>
+
+            <p className="text-4xl font-bold text-purple-600 mt-3">
+
+                {averageInterviewScore}%
+
+            </p>
+
+        </div>
+
+
+        {/* Latest Score */}
+
+        <div className="bg-white shadow-lg rounded-xl p-6 text-center border-t-4 border-orange-500">
+
+            <h3 className="text-lg font-semibold text-gray-700">
+
+                Latest Score
+
+            </h3>
+
+            <p className="text-4xl font-bold text-orange-600 mt-3">
+
+                {latestInterviewScore}%
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
     <h2 className="text-2xl font-bold text-center mb-8">
-        🚀 Quick Actions
+        Quick Actions
     </h2>
 
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
