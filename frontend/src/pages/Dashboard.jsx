@@ -124,7 +124,7 @@ const latestInterviewScore =
             <div className="bg-blue-600 text-white p-5 flex justify-between items-center">
 
                 <h1 className="text-3xl font-bold">
-                    AI Placement Portal
+                    Placement Portal
                 </h1>
 
 
@@ -183,9 +183,7 @@ const latestInterviewScore =
         </p>
 
         <p className="text-4xl font-bold text-green-600 mt-3">
-
-            1
-
+            {totalInterviews}
         </p>
 
     </div>

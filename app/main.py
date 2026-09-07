@@ -6,6 +6,7 @@ from app.models.user import User
 from app.routes.auth import router as auth_router
 from app.routes.resume import router as resume_router
 from app.routes.jobs import router as jobs_router
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -29,5 +30,5 @@ app.include_router(jobs_router)
 @app.get("/")
 def home():
     return {
-        "message": "AI Placement Portal Running Successfully"
+        "message": "Placement Portal Running Successfully"
     }

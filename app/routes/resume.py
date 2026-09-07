@@ -78,14 +78,7 @@ def analyze_resume():
         "MongoDB",
         "SQLAlchemy",
 
-        # AI / ML
-        "Machine Learning",
-        "Artificial Intelligence",
-        "Deep Learning",
-        "Pandas",
-        "NumPy",
-        "Scikit-Learn",
-        "TensorFlow",
+        
 
         # Tools
         "Git",
@@ -145,6 +138,7 @@ def analyze_resume():
 
         "skills": found_skills,
 
-        "missing_skills": missing_skills
+        "missing_skills": missing_skills,
 
     }
+

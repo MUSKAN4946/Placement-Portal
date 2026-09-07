@@ -1,102 +1,105 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function InterviewFeedback() {
-    // Get ATS score
-    const storedScore = window.localStorage.getItem("atsScore");
-    const score = Number(storedScore) || 50;
+    const [interviewHistory, setInterviewHistory] = useState([]);
 
-    let performance = "";
+    useEffect(() => {
+        try {
+            const savedHistory =
+                window.localStorage.getItem("interviewHistory");
+
+            if (savedHistory) {
+                const parsedHistory = JSON.parse(savedHistory);
+
+                if (Array.isArray(parsedHistory)) {
+                    setInterviewHistory(parsedHistory);
+                }
+            }
+        } catch (error) {
+            console.error("Unable to load interview history:", error);
+            setInterviewHistory([]);
+        }
+    }, []);
+
+    // Get latest interview score
+    const score =
+        interviewHistory.length > 0
+            ? Number(interviewHistory[0].score) || 0
+            : 0;
+
+    // Performance function
+    const getPerformance = (value) => {
+        if (value >= 80) {
+            return "Excellent";
+        } else if (value >= 60) {
+            return "Good";
+        } else if (value >= 40) {
+            return "Average";
+        } else {
+            return "Needs Improvement";
+        }
+    };
+
+    const performance = getPerformance(score);
+
+    let badge = "";
     let strengths = [];
     let improvements = [];
     let recommendation = "";
-    let badge = "";
 
-    // Performance based on score
-    if (score >= 90) {
-
-        performance = "Excellent";
+    // Feedback based on interview score
+    if (score >= 80) {
         badge = "Placement Ready";
 
         strengths = [
-            "Excellent Python knowledge",
-            "Strong OOP Concepts",
-            "Excellent Problem Solving"
+            "Strong interview performance",
+            "Good technical understanding",
+            "Clear and relevant answers"
         ];
 
         improvements = [
-            "Keep solving advanced DSA",
-            "Attend company mock interviews"
+            "Keep practicing advanced technical questions",
+            "Continue improving communication skills"
         ];
 
         recommendation =
-            "You are fully placement ready.";
-
-    }
-
-    else if (score >= 75) {
-
-        performance = "Very Good";
+            "Excellent performance. Keep practicing regularly to stay placement ready.";
+    } else if (score >= 60) {
         badge = "Almost Ready";
 
         strengths = [
-            "Good Python knowledge",
-            "Strong Logical Thinking"
+            "Good technical fundamentals",
+            "Good problem-solving approach",
+            "Positive interview performance"
         ];
 
         improvements = [
-            "Practice System Design",
-            "Improve Communication Skills"
+            "Practice more technical questions",
+            "Improve communication skills",
+            "Revise important programming concepts"
         ];
 
         recommendation =
-            "You are very close to being placement ready.";
-
-    }
-
-    else if (score >= 60) {
-
-        performance = "Good";
-        badge = "Needs Practice";
-
-        strengths = [
-            "Good Programming Basics",
-            "Good Learning Ability"
-        ];
-
-        improvements = [
-            "Practice SQL",
-            "Practice FastAPI",
-            "Improve DSA"
-        ];
-
-        recommendation =
-            "Keep practicing consistently.";
-
-    }
-
-    else if (score >= 40) {
-
-        performance = "Average";
+            "Good progress. Continue practicing technical and communication skills.";
+    } else if (score >= 40) {
         badge = "Keep Learning";
 
         strengths = [
-            "Basic Programming Knowledge"
+            "Basic technical understanding",
+            "Willingness to learn",
+            "Good scope for improvement"
         ];
 
         improvements = [
-            "Revise Python",
-            "Practice OOP",
-            "Practice Aptitude"
+            "Revise Python fundamentals",
+            "Practice OOP concepts",
+            "Practice SQL questions",
+            "Improve communication"
         ];
 
         recommendation =
-            "You need more practice before placements.";
-
-    }
-
-    else {
-
-        performance = "Needs Improvement";
+            "Keep practicing consistently and strengthen your fundamentals before placements.";
+    } else {
         badge = "Beginner";
 
         strengths = [
@@ -104,272 +107,182 @@ function InterviewFeedback() {
         ];
 
         improvements = [
-            "Revise Python",
-            "Revise OOP",
+            "Revise Python fundamentals",
+            "Revise OOP concepts",
             "Practice SQL",
             "Improve Communication"
         ];
 
         recommendation =
-            "Focus on fundamentals first.";
-
+            "Focus on fundamentals first and practice more mock interviews.";
     }
-
-
-
-
-
-
-
-    // ================================
-// INTERVIEW HISTORY - DISPLAY ONLY
-// ================================
-
-let interviewHistory = [];
-
-try {
-
-    const savedHistory =
-        window.localStorage.getItem("interviewHistory");
-
-    if (savedHistory) {
-
-        const parsedHistory =
-            JSON.parse(savedHistory);
-
-        if (Array.isArray(parsedHistory)) {
-
-            interviewHistory = parsedHistory;
-
-        }
-
-    }
-
-} catch (error) {
-
-    interviewHistory = [];
-
-}
-
 
     return (
-
         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
 
             <div className="bg-white shadow-xl rounded-xl p-10 w-[700px]">
 
                 {/* Heading */}
-
                 <h1 className="text-4xl font-bold text-center text-purple-700 mb-8">
-
-                    AI Interview Feedback
-
+                    Interview Feedback
                 </h1>
 
-
                 {/* Overall Score */}
-
                 <div className="bg-blue-100 border border-blue-400 rounded-xl p-6 mb-8 text-center">
 
                     <h2 className="text-2xl font-bold text-blue-700">
-
                         Overall Interview Score
-
                     </h2>
 
                     <p className="text-5xl font-bold text-blue-600 mt-4">
-
                         {score}%
-
                     </p>
 
                 </div>
 
-
                 {/* Performance */}
-
                 <h2 className="text-2xl text-center font-bold text-blue-700 mb-8">
-
                     {performance}
-
                 </h2>
 
-
                 {/* Badge */}
-
                 <div className="bg-purple-100 border border-purple-400 rounded-lg p-4 mb-6 text-center">
 
                     <h2 className="text-xl font-bold text-purple-700">
-
                         🏅 Achievement Badge
-
                     </h2>
 
                     <p className="text-lg font-semibold mt-2">
-
                         {badge}
-
                     </p>
 
                 </div>
 
-
                 {/* Strengths */}
-
                 <div className="bg-green-100 border border-green-400 rounded-lg p-5 mb-6">
 
                     <h2 className="text-2xl font-bold text-green-700 mb-3">
-
                         ✅ Strengths
-
                     </h2>
 
                     <ul className="list-disc ml-6 space-y-2">
 
                         {strengths.map((item, index) => (
-
                             <li key={index}>
-
                                 {item}
-
                             </li>
-
                         ))}
 
                     </ul>
 
                 </div>
 
-
                 {/* Improvements */}
-
                 <div className="bg-yellow-100 border border-yellow-400 rounded-lg p-5 mb-6">
 
                     <h2 className="text-2xl font-bold text-yellow-700 mb-3">
-
                         📚 Areas to Improve
-
                     </h2>
 
                     <ul className="list-disc ml-6 space-y-2">
 
                         {improvements.map((item, index) => (
-
                             <li key={index}>
-
                                 {item}
-
                             </li>
-
                         ))}
 
                     </ul>
 
                 </div>
 
-
                 {/* Recommendation */}
-
                 <div className="bg-blue-100 border border-blue-400 rounded-lg p-5">
 
                     <h2 className="text-2xl font-bold text-blue-700 mb-3">
-
                         🎯 Overall Recommendation
-
                     </h2>
 
                     <p>
-
                         {recommendation}
-
                     </p>
 
-
-                    {/* ========================= */}
-                    {/* INTERVIEW HISTORY */}
-                    {/* ========================= */}
-
+                    {/* Interview History */}
                     <div className="bg-white border rounded-lg shadow-md p-5 mt-6">
 
                         <h2 className="text-2xl font-bold text-blue-700 mb-4">
-
                             Interview History
-
                         </h2>
-
 
                         {interviewHistory.length === 0 ? (
 
                             <p className="text-gray-500">
-
                                 No interview history available.
-
                             </p>
 
                         ) : (
 
-                            <table className="w-full border-collapse">
+                            <div className="overflow-x-auto">
 
-                                <thead>
+                                <table className="w-full border-collapse">
 
-                                    <tr className="bg-gray-100">
+                                    <thead>
 
-                                        <th className="border p-2">
+                                        <tr className="bg-gray-100">
 
-                                            Date
+                                            <th className="border p-2">
+                                                Date
+                                            </th>
 
-                                        </th>
+                                            <th className="border p-2">
+                                                Score
+                                            </th>
 
-                                        <th className="border p-2">
+                                            <th className="border p-2">
+                                                Performance
+                                            </th>
 
-                                            Score
+                                        </tr>
 
-                                        </th>
+                                    </thead>
 
-                                        <th className="border p-2">
+                                    <tbody>
 
-                                            Performance
+                                        {interviewHistory.map(
+                                            (item, index) => {
 
-                                        </th>
+                                                const historyScore =
+                                                    Number(item.score) || 0;
 
-                                    </tr>
+                                                const historyPerformance =
+                                                    item.performance ||
+                                                    getPerformance(historyScore);
 
-                                </thead>
+                                                return (
+                                                    <tr key={index}>
 
+                                                        <td className="border p-2 text-center">
+                                                            {item.date}
+                                                        </td>
 
-                                <tbody>
+                                                        <td className="border p-2 text-center font-semibold">
+                                                            {historyScore}%
+                                                        </td>
 
-                                    {interviewHistory.map(
-                                        (item, index) => (
+                                                        <td className="border p-2 text-center">
+                                                            {historyPerformance}
+                                                        </td>
 
-                                            <tr key={index}>
+                                                    </tr>
+                                                );
+                                            }
+                                        )}
 
-                                                <td className="border p-2 text-center">
+                                    </tbody>
 
-                                                    {item.date}
+                                </table>
 
-                                                </td>
-
-                                                <td className="border p-2 text-center">
-
-                                                    {item.score}%
-
-                                                </td>
-
-                                                <td className="border p-2 text-center">
-
-                                                    {item.performance}
-
-                                                </td>
-
-                                            </tr>
-
-                                        )
-                                    )}
-
-                                </tbody>
-
-                            </table>
+                            </div>
 
                         )}
 
@@ -380,9 +293,7 @@ try {
             </div>
 
         </div>
-
     );
-
 }
 
 export default InterviewFeedback;

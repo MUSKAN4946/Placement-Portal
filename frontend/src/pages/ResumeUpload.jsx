@@ -61,150 +61,6 @@ function ResumeUpload() {
             score
         );
 
-
-        // ================================
-        // PERFORMANCE
-        // ================================
-
-        let performance = "";
-
-        if (score >= 90) {
-
-            performance = "Excellent";
-
-        } else if (score >= 75) {
-
-            performance = "Very Good";
-
-        } else if (score >= 60) {
-
-            performance = "Good";
-
-        } else if (score >= 40) {
-
-            performance = "Average";
-
-        } else {
-
-            performance = "Needs Improvement";
-
-        }
-
-
-        // ================================
-        // GET HISTORY
-        // ================================
-
-        let history = [];
-
-        const savedHistory =
-            localStorage.getItem("interviewHistory");
-
-        if (savedHistory) {
-
-            try {
-
-                const parsed =
-                    JSON.parse(savedHistory);
-
-                if (Array.isArray(parsed)) {
-
-                    history = parsed;
-
-                }
-
-            } catch {
-
-                history = [];
-
-            }
-
-        }
-
-
-        // ================================
-        // TODAY
-        // ================================
-
-        const today =
-            new Date().toLocaleDateString();
-
-
-        // ================================
-        // REMOVE DUPLICATES
-        // ================================
-
-        const cleanedHistory = history.filter(
-            (item, index, array) => {
-
-                const key =
-                    `${item.date}-${Number(item.score)}`;
-
-                return (
-                    index ===
-                    array.findIndex(
-                        (other) =>
-                            `${other.date}-${Number(other.score)}` === key
-                    )
-                );
-
-            }
-        );
-
-
-        // ================================
-        // CHECK CURRENT INTERVIEW
-        // ================================
-
-        const exists =
-            cleanedHistory.some(
-                (item) =>
-                    item.date === today &&
-                    Number(item.score) === score
-            );
-
-
-        // ================================
-        // ADD ONLY IF NOT EXISTS
-        // ================================
-
-        let finalHistory =
-            cleanedHistory;
-
-        if (!exists) {
-
-            finalHistory = [
-
-                {
-                    date: today,
-                    score: score,
-                    performance: performance
-                },
-
-                ...cleanedHistory
-
-            ];
-
-        }
-
-
-        // ================================
-        // ONLY LAST 5
-        // ================================
-
-        finalHistory =
-            finalHistory.slice(0, 5);
-
-
-        // ================================
-        // SAVE
-        // ================================
-
-        localStorage.setItem(
-            "interviewHistory",
-            JSON.stringify(finalHistory)
-        );
-
     
 
         // ================================
@@ -238,7 +94,7 @@ function ResumeUpload() {
 
                 <p className="text-center text-gray-600 mb-6">
 
-                    Upload your latest resume to receive an AI-based analysis.
+                    Upload your latest resume to analyze your skills and resume quality.
 
                 </p>
 
@@ -290,7 +146,7 @@ function ResumeUpload() {
 
                             <p className="text-center text-green-600 font-semibold mb-6">
 
-                                ✅ Resume analyzed successfully by AI
+                                ✅ Resume analyzed successfully
 
                             </p>
 
@@ -364,29 +220,27 @@ function ResumeUpload() {
 
                             <br />
 
-                            <h3 className="font-bold text-red-600">
-                                Missing Skills
-                            </h3>
+                           <h3 className="font-bold text-red-600 mb-3">
+    Top Missing Skills
+</h3>
 
-                           <div className="flex flex-wrap gap-3">
+<p className="text-sm text-gray-500 mb-4">
+    Focus on these skills to improve your resume.
+</p>
 
+<div className="flex flex-wrap gap-3">
     {
-
-        analysis.missing_skills.map((skill, index) => (
-
-            <span
-                key={index}
-                className="bg-red-100 text-red-700 px-4 py-2 rounded-full font-semibold"
-            >
-
-                {skill}
-
-            </span>
-
-        ))
-
+        analysis.missing_skills
+            .slice(0, 6)
+            .map((skill, index) => (
+                <span
+                    key={index}
+                    className="bg-red-100 text-red-700 px-4 py-2 rounded-full font-semibold"
+                >
+                    {skill}
+                </span>
+            ))
     }
-
 </div>
 
 
@@ -396,7 +250,7 @@ function ResumeUpload() {
 
     <h3 className="text-xl font-bold text-yellow-700 mb-3">
 
-        💡 AI Suggestions
+        💡 Resume Improvement Suggestions
 
     </h3>
 

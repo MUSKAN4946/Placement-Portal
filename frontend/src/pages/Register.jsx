@@ -37,7 +37,7 @@ function Register() {
             <div className="bg-white shadow-lg rounded-xl p-8 w-96">
 
                 <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">
-                    AI Placement Portal
+                    Placement Portal
                 </h1>
 
                 <h2 className="text-xl font-semibold text-center mb-6">
