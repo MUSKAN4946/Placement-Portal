@@ -1,6 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
-
+import api from "../api";
 function ResumeUpload() {
 
     const [file, setFile] = useState(null);
@@ -19,8 +18,9 @@ function ResumeUpload() {
 
         try {
 
-            const response = await axios.post(
-                "http://127.0.0.1:8000/upload-resume",
+            const response = await api.post(
+                    "/upload-resume",
+
                 formData,
                 {
                     headers: {
@@ -48,9 +48,9 @@ function ResumeUpload() {
 
     try {
 
-        const response = await axios.get(
-            "http://127.0.0.1:8000/analyze-resume"
-        );
+        const response = await api.get(
+    "/analyze-resume"
+);
 
         const score = Number(response.data.score);
 

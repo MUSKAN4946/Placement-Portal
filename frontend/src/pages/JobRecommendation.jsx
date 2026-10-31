@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api";
 import { useNavigate } from "react-router-dom";
 
 function JobRecommendation() {
@@ -43,9 +43,9 @@ function JobRecommendation() {
 
         try {
 
-            const response = await axios.get(
-                "http://127.0.0.1:8000/recommended-jobs"
-            );
+           const response = await api.get(
+    "/recommended-jobs"
+);
 
             setJobs(response.data);
 

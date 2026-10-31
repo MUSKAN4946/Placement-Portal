@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api";
 
 function Dashboard() {
 
@@ -67,9 +67,9 @@ const latestInterviewScore =
 
             // Recommended Jobs
 
-            const jobsResponse = await axios.get(
-                "http://127.0.0.1:8000/recommended-jobs"
-            );
+           const jobsResponse = await api.get(
+    "/recommended-jobs"
+);
 
             setTotalJobs(jobsResponse.data.length);
 
@@ -85,9 +85,9 @@ const latestInterviewScore =
 
             // Resume Analysis
 
-            const resumeResponse = await axios.get(
-                "http://127.0.0.1:8000/analyze-resume"
-            );
+           const resumeResponse = await api.get(
+    "/analyze-resume"
+);
 
             setAtsScore(
                 resumeResponse.data.score
