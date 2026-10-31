@@ -1,49 +1,38 @@
+
 import { useState } from "react";
 import api from "../api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
 
     const loginUser = async () => {
-
         try {
+            const response = await api.post("/login", {
+                email,
+                password
+            });
 
-           const response = await api.post(
-    "/login",
-    {
-        email,
-        password
-    }
-);
             console.log(response.data);
+
             localStorage.setItem(
                 "token",
                 response.data.access_token
             );
 
             alert(response.data.message);
-
             navigate("/dashboard");
 
-        }
-
-        catch (error) {
-
+        } catch (error) {
             alert("Login Failed");
-
         }
-
     };
 
     return (
-
         <div className="min-h-screen bg-gray-100 flex justify-center items-center">
-
             <div className="bg-white shadow-lg rounded-xl p-8 w-96">
 
                 <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">
@@ -75,12 +64,19 @@ function Login() {
                     Login
                 </button>
 
+                <p className="text-center text-gray-600 mt-5">
+                    Don't have an account?{" "}
+                    <Link
+                        to="/register"
+                        className="text-blue-600 font-semibold hover:underline"
+                    >
+                        Register
+                    </Link>
+                </p>
+
             </div>
-
         </div>
-
     );
-
 }
 
 export default Login;
